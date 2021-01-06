@@ -98,12 +98,12 @@ class GiphyActivity :AppCompatActivity(),GiphyAdapter.OnClickListener {
     override fun whenListIsUpdated(size: Int, networkState: NetworkState?) {
         updateUIWhenLoading(size, networkState)
         updateUIWhenEmptyList(size, networkState)
-        var offset=(25*EventsUtils.offsetValue)+1
+       /* var offset=(25*EventsUtils.offsetValue)+1
         if(EventsUtils.offsetValue<=10){
             viewModel.fetchNextSetData("25",offset.toString())
 
         }
-        EventsUtils.offsetValue++;
+        EventsUtils.offsetValue++;*/
 
     }
 }

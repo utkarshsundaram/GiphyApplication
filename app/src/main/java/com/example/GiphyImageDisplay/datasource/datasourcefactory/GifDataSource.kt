@@ -7,6 +7,7 @@ import androidx.paging.PageKeyedDataSource
 import com.example.GiphyImageDisplay.datasource.networkstate.NetworkState
 import com.example.GiphyImageDisplay.datasource.repository.GiphyRepository
 import com.example.GiphyImageDisplay.model.GifFileResponse
+import com.example.GiphyImageDisplay.utils.EventsUtils
 import kotlinx.coroutines.*
 
 class GifDataSource (private val repository: GiphyRepository,
@@ -29,8 +30,9 @@ class GifDataSource (private val repository: GiphyRepository,
 
     override fun loadAfter(params: PageKeyedDataSource.LoadParams<Int>, callback: PageKeyedDataSource.LoadCallback<Int, GifFileResponse>) {
         val page = params.key
+        Log.d("pageNo",""+page)
         retryQuery = { loadAfter(params, callback) }
-        executeQuery(page, params.requestedLoadSize) {
+        executeQueryAfter(page, params.requestedLoadSize) {
             callback.onResult(it, page + 1)
         }
     }
@@ -41,8 +43,7 @@ class GifDataSource (private val repository: GiphyRepository,
     private fun executeQuery(page: Int, perPage: Int, callback:(MutableList<GifFileResponse>) -> Unit) {
         networkState.postValue(NetworkState.RUNNING)
         scope.launch(getJobErrorHandler() + supervisorJob) {
-            delay(200) // To handle user typing case
-
+            // To handle user typing case
             val users:MutableList<GifFileResponse> = repository.searchGIFsWithPagination(limit, offset.toString(),"g") as MutableList<GifFileResponse>
             retryQuery = null
             networkState.postValue(NetworkState.SUCCESS)
@@ -50,17 +51,18 @@ class GifDataSource (private val repository: GiphyRepository,
         }
     }
 
-  /*  private fun executeQueryAfter(page: Int, perPage: Int, callback:(MutableList<GifFileResponse>) -> Unit) {
+    private fun executeQueryAfter(page: Int, perPage: Int, callback:(MutableList<GifFileResponse>) -> Unit) {
         networkState.postValue(NetworkState.RUNNING)
         scope.launch(getJobErrorHandler() + supervisorJob) {
-            delay(200) // To handle user typing case
-            var offsetlimit=offset.toInt()+25;
+            delay(5000) // To handle user typing case
+            var offsetlimit=26*EventsUtils.offsetValue;
+            EventsUtils.offsetValue++
             val users:MutableList<GifFileResponse> = repository.searchGIFsWithPagination(limit, offsetlimit.toString(),"g") as MutableList<GifFileResponse>
             retryQuery = null
             networkState.postValue(NetworkState.SUCCESS)
             callback(users)
         }
-    }*/
+    }
 
 
     private fun getJobErrorHandler() = CoroutineExceptionHandler { _, e ->

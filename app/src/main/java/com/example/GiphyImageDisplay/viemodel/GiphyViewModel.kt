@@ -39,9 +39,9 @@ class GiphyViewModel(repository: GiphyRepository): BaseViewModel() {
 
 
     private fun pagedListConfig() = PagedList.Config.Builder()
-        .setInitialLoadSizeHint(5)
+        .setInitialLoadSizeHint(100)
         .setEnablePlaceholders(false)
-        .setPageSize(5 * 2)
+        .setPageSize(100)
         .build()
 
 

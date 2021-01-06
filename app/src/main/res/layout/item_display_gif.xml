@@ -4,7 +4,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="200dp">
 
         <TextView
                 android:id="@+id/item_search_user_title"
@@ -23,7 +23,7 @@
         <ImageView
                 android:id="@+id/item_search_user_image_profile"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 app:srcCompat="@color/black"
                 android:layout_marginTop="16dp"
                 android:layout_marginStart="16dp"
